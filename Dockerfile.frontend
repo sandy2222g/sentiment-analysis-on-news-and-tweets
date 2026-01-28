@@ -1,0 +1,24 @@
+# Use full Ruby image to ensure build tools are present
+FROM ruby:3.2
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies for gems if needed
+# Skipped to avoid network repository issues.
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     build-essential \
+#     && rm -rf /var/lib/apt/lists/*
+
+# Copy Gemfile and install dependencies
+COPY Gemfile .
+RUN bundle install
+
+# Copy application code
+COPY final.rb .
+
+# Expose the port
+EXPOSE 3000
+
+# Run the application
+CMD ["ruby", "final.rb"]
